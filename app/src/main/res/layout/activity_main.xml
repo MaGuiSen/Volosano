@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:background="#000000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <lib.widget.CircleProgressView
+        android:id="@+id/circleProgressbar"
+        android:layout_width="100dp"
+        android:layout_height="100dp" />
+    <lib.widget.WareGridView
+        android:id="@+id/WareGridView"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true" />
+    <lib.widget.WareView
+        android:id="@+id/WareView"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

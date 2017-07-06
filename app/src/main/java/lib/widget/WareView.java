@@ -78,6 +78,7 @@ public class WareView extends View {
             canvas.drawLine(0, currFirst.y, currFirst.x, currFirst.y, paint);
         }
 
+        //给右侧第一个点加圆圈
         PointRun currLast = pointList.get(size - 1);
         canvas.drawCircle(currLast.x, currLast.y, 5, paint);
 
@@ -98,24 +99,28 @@ public class WareView extends View {
                 if (first.index == second.index) {
                     int random = new Random().nextInt(2);
                     if (random == 1) {
+                        //添加同级
                         pointList.add(0, new PointRun(0, first.index * 1.0f * spaceY + topBottomDy / 2.0f, first.index));
                     } else {
                         if (first.index == 1) {
+                            //添加竖直 向下
                             int yIndex = lineHorizontalNum - 2;
                             pointList.add(0, new PointRun(first.x, yIndex * 1.0f * spaceY + topBottomDy / 2.0f, yIndex));
                         } else {
+                            //添加竖直 向上
                             int yIndex = 1;
                             pointList.add(0, new PointRun(first.x, yIndex * 1.0f * spaceY + topBottomDy / 2.0f, yIndex));
                         }
                     }
                 } else {
+                    //添加同级
                     pointList.add(0, new PointRun(0, first.index * 1.0f * spaceY + topBottomDy / 2.0f, first.index));
                 }
             }
         }
         //注意重新计算长度
         size = pointList.size();
-        //去最后一条
+        //判断 去最后一条
         PointRun last = pointList.get(size - 1);
         if(last.isOut(width+spaceX)){
             pointList.remove(size - 1);

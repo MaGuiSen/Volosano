@@ -20,5 +20,18 @@
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_centerInParent="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp">
+        <ImageView
+            android:scaleType="fitXY"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_whell_bg"/>
+        <lib.widget.WheelView
+            android:id="@+id/WheelView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
 
 </RelativeLayout>

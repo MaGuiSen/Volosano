@@ -1,5 +1,31 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <!-- 文字大小-->
+    <dimen name="theme_text_size_twelve">12sp</dimen>
+    <dimen name="theme_text_size_thirteen">13sp</dimen>
+    <dimen name="theme_text_size_fourteen">14sp</dimen>
+    <dimen name="theme_text_size_fifteen">15sp</dimen>
+    <dimen name="theme_text_size_sixteen">16sp</dimen>
+    <dimen name="theme_text_size_eighteen">18sp</dimen>
+
+    <!-- margin、padding-->
+    <dimen name="theme_margin_five">5dp</dimen>
+    <dimen name="theme_margin_ten">10dp</dimen>
+    <dimen name="theme_margin_fifteen">15dp</dimen>
+    <dimen name="theme_margin_twenty">20dp</dimen>
+    <dimen name="theme_padding_five">5dp</dimen>
+    <dimen name="theme_padding_ten">10dp</dimen>
+    <dimen name="theme_padding_twelve">12dp</dimen>
+    <dimen name="theme_padding_fifteen">15dp</dimen>
+
+    <dimen name="theme_btn_height_a">44dp</dimen>
+
+    <dimen name="action_bar_height">44dp</dimen>
+    <!-- 标题栏中间字体大小-->
+    <dimen name="titlebar_text_center_size">20sp</dimen>
+    <!-- 标题栏右边字体大小-->
+    <dimen name="titlebar_text_right_size">16sp</dimen>
 </resources>

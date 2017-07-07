@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--状态栏颜色-->
+    <color name="bar_status_color">#383939</color>
+    <color name="bar_bg_color">#383939</color>
+    <color name="theme_bg_color">#383939</color>
+    <!-- 标题栏标题颜色-->
+    <color name="bar_text_center_color">#ffffffff</color>
+    <!-- 标题栏右上角字体颜色-->
+    <color name="bar_text_right_color">#ffffffff</color>
+
+    <!-- 主题绿色，abc..不代表等级-->
+    <color name="theme_color_green_a">#ff01aa94</color>
+    <!--主题灰色，abc..不代表等级-->
+    <color name="theme_color_gray_a">#fff2f2f2</color>
+    <color name="theme_color_gray_b">#ffb3b3b3</color>
+    <color name="theme_color_gray_c">#ff808080</color>
+    <color name="theme_color_gray_d">#ffe6e6e6</color>
+    <!-- 主题橙色，abc..不代表等级-->
+    <color name="theme_color_orange_a">#F4BB1B</color>
+    <color name="theme_color_orange_b">#dae6b019</color>
+    <!-- 主题黑色，abc..不代表等级-->
+    <color name="theme_color_black_a">#ff5c5c5c</color>
+    <color name="theme_color_black_b">#ff333333</color>
+    <color name="theme_color_black_c">#ff4d4d4d</color>
+    <color name="theme_color_white_a">#ffffffff</color>
+    <color name="theme_color_purple_a">#ff874b7d</color>
+    <color name="theme_color_purple_b">#df7bcf</color>
+    <color name="theme_transparent">#00ffffff</color>
 </resources>

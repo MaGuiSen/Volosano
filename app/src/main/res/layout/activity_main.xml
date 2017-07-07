@@ -1,25 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_main"
-    android:background="#000000"
+    android:background="@color/theme_bg_color"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-    <lib.widget.CircleProgressView
-        android:id="@+id/circleProgressbar"
-        android:layout_width="100dp"
-        android:layout_height="100dp" />
-    <lib.widget.WareGridView
-        android:id="@+id/WareGridView"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true" />
-    <lib.widget.WareView
-        android:id="@+id/WareView"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
+        android:src="@mipmap/bg_head"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height">
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/img_back"
+            android:layout_width="@dimen/action_bar_height"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/selector_icon_back" />
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="44dp"
+            android:layout_marginRight="44dp"
+            android:ellipsize="end"
+            android:text="Pain Points"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:maxLength="10"
+            android:textColor="@color/bar_text_center_color"
+            android:textSize="@dimen/titlebar_text_center_size" />
+
+        <ImageView
+            android:id="@+id/img_msg"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:src="@mipmap/icon_msg" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/theme_color_orange_a"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingTop="10dp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/icon_body"/>
+    </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="180dp">
@@ -34,4 +81,14 @@
             android:layout_height="match_parent"/>
     </RelativeLayout>
 
-</RelativeLayout>
+    <ImageView
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitXY"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:src="@mipmap/icon_ok"
+        android:id="@+id/img_ok" />
+
+</LinearLayout>

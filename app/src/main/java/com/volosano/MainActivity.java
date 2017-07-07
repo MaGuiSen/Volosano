@@ -1,71 +1,33 @@
 package com.volosano;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import java.sql.Time;
 import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import lib.widget.CircleProgressView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import lib.util.ToastUtil;
 import lib.widget.WheelView;
 
 public class MainActivity extends AppCompatActivity {
-    private CircleProgressView mCircleBar;
-    Timer timer = null;
-    int progress = 0;
-    int maxTime = 100;//10分钟 转化成秒
-    int currTime = 0;
-
     private static final String[] PLANETS = new String[]{"Mercury", "Venus", "Earth"};
+    @Bind(R.id.WheelView)
+    lib.widget.WheelView WheelView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initTimer();
+        ButterKnife.bind(this);
         initWheelView();
     }
 
-    public void initTimer(){
-        mCircleBar = (CircleProgressView) findViewById(R.id.circleProgressbar);
-        mCircleBar.setProgress(0);
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                currTime += 1;
-                Log.e("currTime",currTime+",,"+maxTime);
-                progress = currTime;
-                if(progress > 100){
-                    timer.cancel();
-                    timer = null;
-                    currTime = 0;
-                }else{
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mCircleBar.setProgress(progress);
-                        }
-                    });
-                }
-//                if(currTime >= maxTime){
-//                    timer.cancel();
-//                    timer = null;
-//                    currTime = 0;
-//                }else{
-//                    progress = (int) (100 * (currTime / maxTime));
-//                }
-
-            }
-        },1000, 2000);
-    }
-
-    public void initWheelView(){
+    public void initWheelView() {
         WheelView wva = (WheelView) findViewById(R.id.WheelView);
-
         wva.setOffset(1);
         wva.setItems(Arrays.asList(PLANETS));
         wva.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
@@ -76,12 +38,31 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @OnClick(R.id.img_msg)
+    public void onClick() {
+        startActivity(new Intent(this, ContactActivity.class));
+    }
+
+    @OnClick(R.id.img_ok)
+    public void onCheck() {
+        startActivity(new Intent(this, SettingActivity.class));
+    }
+
+    // 再按一次退出
+    private long firstTime;
+    private long secondTime;
+    private long spaceTime;
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(timer != null){
-            timer.cancel();
-            timer = null;
+    public void onBackPressed() {
+        firstTime = System.currentTimeMillis();
+        spaceTime = firstTime - secondTime;
+        secondTime = firstTime;
+        if (spaceTime > 2000) {
+            ToastUtil.show("Click again to exit the application");
+        } else {
+            super.onBackPressed();
+            System.exit(0);
         }
     }
 }

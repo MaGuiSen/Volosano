@@ -59,15 +59,26 @@
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:src="@mipmap/icon_hand" />
-    <lib.widget.WareView
+    <RelativeLayout
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:id="@+id/ware_view"
-        android:layout_width="310dp"
-        android:layout_height="120dp" />
+        android:gravity="center"
+        android:layout_width="240dp"
+        android:layout_height="120dp">
+        <lib.widget.WareGridView
+            android:id="@+id/WareGridView"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_centerInParent="true" />
+        <lib.widget.WareView
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/ware_view"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+    </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -92,11 +103,22 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp" />
         </LinearLayout>
+
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:orientation="vertical"
             android:gravity="center">
+            <TextView
+                android:visibility="invisible"
+                android:textSize="20sp"
+                android:textColor="@color/theme_color_orange_a"
+                android:text="1.30pm"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <ImageView
                 android:id="@+id/img_play"
                 android:src="@mipmap/icon_stop"

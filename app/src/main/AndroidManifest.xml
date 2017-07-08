@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Picker"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".ContactActivity" />
         <activity android:name=".SettingActivity" />

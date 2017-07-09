@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/theme_color_gray_a"
+    android:clipToPadding="false"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/action_bar_height"
+        android:background="@color/bar_bg_color">
+
+        <TextView
+            android:id="@+id/txt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Cancel"
+            android:textColor="@color/theme_color_white_a"
+            android:textSize="@dimen/titlebar_text_right_size" />
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/action_bar_height"
+            android:layout_marginRight="@dimen/action_bar_height"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text="Time Choice"
+            android:textColor="@color/bar_text_center_color"
+            android:textSize="@dimen/titlebar_text_center_size" />
+
+        <TextView
+            android:id="@+id/txt_commit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Yes"
+            android:textColor="@color/theme_color_white_a"
+            android:textSize="@dimen/titlebar_text_right_size" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <lib.widget.PickValueView
+            android:layout_weight="1"
+            android:id="@+id/pick_value_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"/>
+        <lib.widget.PickValueView
+            android:layout_weight="1"
+            android:id="@+id/pick_value_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</LinearLayout>

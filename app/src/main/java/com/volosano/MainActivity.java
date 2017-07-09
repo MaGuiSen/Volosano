@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 
 import java.util.Arrays;
 
@@ -14,9 +15,13 @@ import lib.util.ToastUtil;
 import lib.widget.WheelView;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String[] PLANETS = new String[]{"Mercury", "Venus", "Earth"};
+    private static final String[] PLANETS = new String[]{"Neck", "Shoulder", "Low Back"};
+    private static final int[] BodyImages = {R.mipmap.icon_body,R.mipmap.icon_body,R.mipmap.icon_body};
     @Bind(R.id.WheelView)
     lib.widget.WheelView WheelView;
+    @Bind(R.id.img_body)
+    ImageView img_body;
+    String currChoicePoint = PLANETS[0];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
         wva.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(int selectedIndex, String item) {
-                Log.d("selectedIndex: ", selectedIndex + ", item: " + item);
+            img_body.setImageResource(BodyImages[selectedIndex - 1]);
+            currChoicePoint = PLANETS[selectedIndex - 1];
             }
         });
     }
@@ -45,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.img_ok)
     public void onCheck() {
-        startActivity(new Intent(this, SettingActivity.class));
+        Intent intent = new Intent(this, SettingActivity.class);
+        intent.putExtra("currPoint", currChoicePoint);
+        startActivity(intent);
     }
 
     // 再按一次退出

@@ -62,6 +62,7 @@
         android:paddingTop="10dp"
         android:gravity="center">
         <ImageView
+            android:id="@+id/img_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/icon_body"/>

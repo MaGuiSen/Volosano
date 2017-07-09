@@ -32,7 +32,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 timer.cancel();
-                startActivity(new Intent(SplashActivity.this, Picker.class));
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 handler.sendEmptyMessageDelayed(1, 300);
             }
         }, 2000);

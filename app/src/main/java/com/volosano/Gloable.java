@@ -1,12 +1,12 @@
 package com.volosano;
 
-import com.volosano.modal.GroupSettingModal;
+import com.volosano.modal.GroupSetting;
 
 /**
  * Created by mags on 2017/7/9.
  */
 
 public class Gloable {
-    public static GroupSettingModal group1Setting = null;
-    public static GroupSettingModal group2Setting = null;
+    public static GroupSetting group1Setting = null;
+    public static GroupSetting group2Setting = null;
 }

@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.volosano.modal.GroupSettingModal;
+import com.volosano.modal.GroupSetting;
+import com.volosano.modal.PointSetting;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,13 +36,13 @@ public class SettingActivity extends AppCompatActivity {
     @Bind(R.id.txt_first_time)
     TextView txtFirstTime;
     @Bind(R.id.txt_first_minute)
-    TextView txtFirstMinute;
+    TextView txtFirstTimeLong;
     @Bind(R.id.img_first_enable)
     ImageView imgFirstEnable;
     @Bind(R.id.txt_second_time)
     TextView txtSecondTime;
     @Bind(R.id.txt_second_minute)
-    TextView txtSecondMinute;
+    TextView txtSecondTimeLong;
     @Bind(R.id.img_second_enable)
     ImageView imgSecondEnable;
     @Bind(R.id.activity_main)
@@ -52,45 +52,107 @@ public class SettingActivity extends AppCompatActivity {
 
     ChoiceTimeDialog choiceTimeDialog1,choiceTimeDialog2;
     ChoiceValueDialog choiceValueDialog1,choiceValueDialog2;
+
     //最大音量
     int maxVolume = 0;
     //当前音量
     int currentVolume = 0;
     AudioManager mAudioManager = null;
 
-    GroupSettingModal group1Setting = new GroupSettingModal();
-    GroupSettingModal group2Setting = new GroupSettingModal();
+    GroupSetting group1Setting = null;
+    GroupSetting group2Setting = null;
 
     String currPoint = "";
+    PointSetting pointSetting = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
+
+        currPoint = getIntent().getStringExtra("currPoint");
+
         initAudioControl();
         initPicker();
         initSetting();
-        refreshViewEnable(imgFirstEnable, txtFirstTime, txtFirstMinute, group1Setting.isEnable());
-        refreshViewEnable(imgSecondEnable, txtSecondTime, txtSecondMinute, group2Setting.isEnable());
-        currPoint = getIntent().getStringExtra("currPoint");
+        initUI();
+    }
+
+    private void initUI() {
         txt_point.setText(currPoint);
+
+        refreshViewEnable(imgFirstEnable, txtFirstTime, txtFirstTimeLong, group1Setting.isEnable());
+        refreshViewEnable(imgSecondEnable, txtSecondTime, txtSecondTimeLong, group2Setting.isEnable());
+
+        refreshGroup(txtFirstTime, txtFirstTimeLong, group1Setting);
+        refreshGroup(txtSecondTime, txtSecondTimeLong, group2Setting);
+
+        //设置音量
+        txtVoice.setText(pointSetting.getIntensity() + "");
+    }
+
+    public void refreshGroup(TextView timeV, TextView timeLongV, GroupSetting groupSetting){
+        int hour = groupSetting.getHour();
+        int minute = groupSetting.getMinute();
+        int timeLong = groupSetting.getTimeLong();
+        String timeStatus = hour > 12 ? "am" : "pm";
+        String minuteString = (minute < 10 ? "0":"") + minute;
+        timeV.setText(hour+":"+minuteString+timeStatus);
+        timeLongV.setText(timeLong+"min");
+    }
+
+    public int getCurrentVolume(){
+        currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        return currentVolume;
     }
 
     private void initSetting() {
-        group1Setting = CacheUtil.get(currPoint+"_group1");
-        group2Setting = CacheUtil.get(currPoint+"_group2");
-        if(group1Setting == null){
-            group1Setting = new GroupSettingModal();
-            group1Setting.setEnable(true);
-            group1Setting.setName("group1");
-        }
-        if(group2Setting == null){
-            group2Setting = new GroupSettingModal();
-            group2Setting.setEnable(false);
-            group2Setting.setName("group2");
+        pointSetting = CacheUtil.get(currPoint);
+        if(pointSetting == null){
+            //说明缓存里面还没有
+            pointSetting = new PointSetting();
+            //设置当前音量
+            pointSetting.setIntensity(getCurrentVolume());
+            pointSetting.setPoint(currPoint);
         }
 
+        group1Setting = pointSetting.getGroupSetting1();
+        group2Setting = pointSetting.getGroupSetting2();
+
+        Calendar cal = Calendar.getInstance();
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+
+        if(group1Setting == null){
+            group1Setting = new GroupSetting();
+            //默认第一组使能
+            group1Setting.setEnable(true);
+            group1Setting.setName("group1");
+            //设置时间为当前时间的小时和分钟数
+            group1Setting.setHour(hour);
+            group1Setting.setMinute(minute);
+            group1Setting.setTimeLong(1);
+            //设置状态为stop
+            group1Setting.setStatus(GroupSetting.STATUS_STOP);
+        }
+
+        if(group2Setting == null){
+            group2Setting = new GroupSetting();
+            //默认第二组不使能
+            group2Setting.setEnable(false);
+            group2Setting.setName("group2");
+            //设置时间为当前时间的小时和分钟数
+            group2Setting.setHour(hour);
+            group2Setting.setMinute(minute);
+            group2Setting.setTimeLong(1);
+            //设置状态为stop
+            group2Setting.setStatus(GroupSetting.STATUS_STOP);
+        }
+    }
+
+    public void setVoice(){
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0); //tempVolume:音量绝对值
     }
 
     private void initPicker() {
@@ -103,6 +165,7 @@ public class SettingActivity extends AppCompatActivity {
             public void choice(int hour, int minute) {
                 group1Setting.setHour(hour);
                 group1Setting.setMinute(minute);
+                initUI();
             }
         });
         choiceTimeDialog2.setDialogClickListener(new ChoiceTimeDialog.DialogClickListener() {
@@ -110,18 +173,21 @@ public class SettingActivity extends AppCompatActivity {
             public void choice(int hour, int minute) {
                 group2Setting.setHour(hour);
                 group2Setting.setMinute(minute);
+                initUI();
             }
         });
         choiceValueDialog1.setDialogClickListener(new ChoiceValueDialog.DialogClickListener() {
             @Override
             public void choice(int timeLong) {
                 group1Setting.setTimeLong(timeLong);
+                initUI();
             }
         });
         choiceValueDialog2.setDialogClickListener(new ChoiceValueDialog.DialogClickListener() {
             @Override
             public void choice(int timeLong) {
                 group2Setting.setTimeLong(timeLong);
+                initUI();
             }
         });
     }
@@ -131,9 +197,6 @@ public class SettingActivity extends AppCompatActivity {
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         //最大音量
         maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        //当前音量
-        currentVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        txtVoice.setText(currentVolume + "");
     }
 
     public void refreshViewEnable(ImageView imageView, TextView time, TextView minuteLong, boolean isEnable){
@@ -164,7 +227,6 @@ public class SettingActivity extends AppCompatActivity {
                 }
                 currentVolume += 1;
                 txtVoice.setText(currentVolume + "");
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0); //tempVolume:音量绝对值
                 break;
             case R.id.img_voice_down:
                 if(currentVolume-1 < 0){
@@ -173,8 +235,6 @@ public class SettingActivity extends AppCompatActivity {
                 }
                 currentVolume -= 1;
                 txtVoice.setText(currentVolume + "");
-                mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, 0); //tempVolume:音量绝对值
-
                 break;
             case R.id.txt_first_time:
                 if(!group1Setting.isEnable()){
@@ -190,7 +250,7 @@ public class SettingActivity extends AppCompatActivity {
                 break;
             case R.id.img_first_enable:
                 group1Setting.setEnable(!group1Setting.isEnable());
-                refreshViewEnable(imgFirstEnable, txtFirstTime, txtFirstMinute, group1Setting.isEnable());
+                refreshViewEnable(imgFirstEnable, txtFirstTime, txtFirstTimeLong, group1Setting.isEnable());
                 break;
             case R.id.txt_second_time:
                 if(!group2Setting.isEnable()){
@@ -206,13 +266,14 @@ public class SettingActivity extends AppCompatActivity {
                 break;
             case R.id.img_second_enable:
                 group2Setting.setEnable(!group2Setting.isEnable());
-                refreshViewEnable(imgSecondEnable, txtSecondTime, txtSecondMinute, group2Setting.isEnable());
+                refreshViewEnable(imgSecondEnable, txtSecondTime, txtSecondTimeLong, group2Setting.isEnable());
                 break;
             case R.id.img_start:
                 //这里将当前设置缓存到内存中
-                //TODO..
-                CacheUtil.set(currPoint+"_group1", group1Setting);
-                CacheUtil.set(currPoint+"_group2", group2Setting);
+                pointSetting.setGroupSetting1(group1Setting);
+                pointSetting.setGroupSetting2(group2Setting);
+                CacheUtil.set(currPoint, pointSetting);
+
                 //判断两个组是否有一组以上使能了
                 if(!group1Setting.isEnable() && group2Setting.isEnable()){
                     ToastUtil.show("Please Enable One Session At Least");

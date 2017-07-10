@@ -94,6 +94,9 @@ public class ChoiceTimeDialog {
             minutes[i] = new Integer(i);
             System.out.println(minutes[i]);
         }
+
+        value1 = hour;
+        value2 = minute;
         pick_value_1.setLeftStep(1);
         pick_value_2.setLeftStep(1);
         pick_value_1.setValueData(hours, hours[0]);

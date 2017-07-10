@@ -4,7 +4,12 @@ package com.volosano.modal;
  * Created by mags on 2017/7/9.
  */
 
-public class GroupSettingModal {
+public class GroupSetting {
+    public static String STATUS_STOP = "stop";
+    public static String STATUS_PAUSE = "pause";
+    public static String STATUS_TIMING = "timing";
+    public static String STATUS_RUNNING = "running";
+
     private int hour;//小时数
     private int minute;//分钟数
     private int timeLong;//时长
@@ -16,7 +21,7 @@ public class GroupSettingModal {
         return hour;
     }
 
-    public GroupSettingModal setHour(int hour) {
+    public GroupSetting setHour(int hour) {
         this.hour = hour;
         return this;
     }
@@ -25,7 +30,7 @@ public class GroupSettingModal {
         return minute;
     }
 
-    public GroupSettingModal setMinute(int minute) {
+    public GroupSetting setMinute(int minute) {
         this.minute = minute;
         return this;
     }
@@ -34,7 +39,7 @@ public class GroupSettingModal {
         return timeLong;
     }
 
-    public GroupSettingModal setTimeLong(int timeLong) {
+    public GroupSetting setTimeLong(int timeLong) {
         this.timeLong = timeLong;
         return this;
     }
@@ -43,7 +48,7 @@ public class GroupSettingModal {
         return status;
     }
 
-    public GroupSettingModal setStatus(String status) {
+    public GroupSetting setStatus(String status) {
         this.status = status;
         return this;
     }
@@ -52,7 +57,7 @@ public class GroupSettingModal {
         return name;
     }
 
-    public GroupSettingModal setName(String name) {
+    public GroupSetting setName(String name) {
         this.name = name;
         return this;
     }
@@ -61,7 +66,7 @@ public class GroupSettingModal {
         return isEnable;
     }
 
-    public GroupSettingModal setEnable(boolean enable) {
+    public GroupSetting setEnable(boolean enable) {
         isEnable = enable;
         return this;
     }

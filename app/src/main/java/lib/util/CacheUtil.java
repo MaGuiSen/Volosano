@@ -1,6 +1,7 @@
 package lib.util;
 
-import com.volosano.modal.GroupSettingModal;
+import com.volosano.modal.GroupSetting;
+import com.volosano.modal.PointSetting;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,19 +12,19 @@ import java.util.Map;
  */
 
 public class CacheUtil {
-    private static Map<String, GroupSettingModal> cacheMap = new HashMap<>();
-    public static GroupSettingModal get(String key){
+    private static Map<String, PointSetting> cacheMap = new HashMap<>();
+    public static PointSetting get(String key){
         return cacheMap.get(key);
     }
 
     /**
-     *
-     * @param key "Neck_group1", "Shoulder_group1", "Low Back_group1" "Neck_group2", "Shoulder_group2", "Low Back_group2"
-     *            "Neck_intensity", "Shoulder_intensity", "Low Back_intensity"
-     * @param groupSettingModal
+     * 根据key：痛点获取设置的缓存
+     * @param key "Neck", "Shoulder", "Low Back"
+     * @param groupSetting
      * @return
      */
-    public static GroupSettingModal set(String key, GroupSettingModal groupSettingModal){
-        return cacheMap.put(key, groupSettingModal);
+    public static Map<String, PointSetting> set(String key, PointSetting groupSetting){
+        cacheMap.put(key, groupSetting);
+        return cacheMap;
     }
 }

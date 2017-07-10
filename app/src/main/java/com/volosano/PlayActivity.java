@@ -15,7 +15,7 @@ import lib.widget.CircleProgressView;
 import lib.widget.WareView;
 
 public class PlayActivity extends AppCompatActivity {
-
+    private static final int[] BodyImages = {R.mipmap.icon_body_part_neck,R.mipmap.icon_body_part_shoulder,R.mipmap.icon_body_part_low_back};
     @Bind(R.id.img_part)
     ImageView imgPart;
     @Bind(R.id.ware_view)
@@ -33,11 +33,20 @@ public class PlayActivity extends AppCompatActivity {
     @Bind(R.id.activity_main)
     LinearLayout activityMain;
 
+    String currPoint = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         ButterKnife.bind(this);
+        currPoint = getIntent().getStringExtra("currPoint");
+        if("Neck".equals(currPoint)){
+            imgPart.setImageResource(BodyImages[0]);
+        }else if("Shoulder".equals(currPoint)){
+            imgPart.setImageResource(BodyImages[1]);
+        }else if("Low Back".equals(currPoint)){
+            imgPart.setImageResource(BodyImages[2]);
+        }
     }
 
     @OnClick({R.id.img_back, R.id.img_msg, R.id.img_play})

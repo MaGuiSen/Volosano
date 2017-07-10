@@ -62,6 +62,7 @@ public class ChoiceValueDialog {
             int left = (int) leftValue;
             if (view == pick_value_1) {
                 txtTitle.setText("Minute:" + left);
+                value1 = left;
             }
         }
     };

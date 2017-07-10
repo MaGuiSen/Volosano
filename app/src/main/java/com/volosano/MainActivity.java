@@ -16,7 +16,7 @@ import lib.widget.WheelView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String[] PLANETS = new String[]{"Neck", "Shoulder", "Low Back"};
-    private static final int[] BodyImages = {R.mipmap.icon_body,R.mipmap.icon_body,R.mipmap.icon_body};
+    private static final int[] BodyImages = {R.mipmap.icon_body_neck,R.mipmap.icon_body_shoulder,R.mipmap.icon_body_low_back};
     @Bind(R.id.WheelView)
     lib.widget.WheelView WheelView;
     @Bind(R.id.img_body)

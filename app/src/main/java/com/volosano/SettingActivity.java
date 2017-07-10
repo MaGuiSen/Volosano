@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -179,6 +180,7 @@ public class SettingActivity extends AppCompatActivity {
         choiceValueDialog1.setDialogClickListener(new ChoiceValueDialog.DialogClickListener() {
             @Override
             public void choice(int timeLong) {
+                Log.e("ddddddddd", ""+timeLong);
                 group1Setting.setTimeLong(timeLong);
                 initUI();
             }
@@ -227,6 +229,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
                 currentVolume += 1;
                 txtVoice.setText(currentVolume + "");
+                pointSetting.setIntensity(currentVolume);
                 break;
             case R.id.img_voice_down:
                 if(currentVolume-1 < 0){
@@ -235,6 +238,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
                 currentVolume -= 1;
                 txtVoice.setText(currentVolume + "");
+                pointSetting.setIntensity(currentVolume);
                 break;
             case R.id.txt_first_time:
                 if(!group1Setting.isEnable()){
@@ -275,29 +279,20 @@ public class SettingActivity extends AppCompatActivity {
                 CacheUtil.set(currPoint, pointSetting);
 
                 //判断两个组是否有一组以上使能了
-                if(!group1Setting.isEnable() && group2Setting.isEnable()){
+                if(!group1Setting.isEnable() && !group2Setting.isEnable()){
                     ToastUtil.show("Please Enable One Session At Least");
                     return;
                 }
-                //判断是否有全局的正在运行或者定时，有则会提示继续会将覆盖之前的设定 ：定时中  pause :暂停中 stop 停止了 running 运行
-                if(Gloable.group1Setting != null
-                        &&  ("timing".equals(Gloable.group1Setting.getStatus())
-                            || "running".equals(Gloable.group1Setting.getStatus())
-                            || "pause".equals(Gloable.group1Setting.getStatus()))){
+
+                //判断是否有全局的正在运行或者定时，有则会提示继续会将覆盖之前的设定 ：timing定时中  pause :暂停中 stop 停止了 running 运行
+                if(Global.isExecuting()){
                     //说明有设置项在起作用,如果继续操作的话将覆盖当前正在运行的
                     showAlertDialog();
                 }else {
-                    //判断是否有全局的正在运行或者定时，有则会提示继续会将覆盖之前的设定 ：定时中  pause :暂停中 stop 停止了 running 运行
-                    if (Gloable.group2Setting != null
-                            && ("timing".equals(Gloable.group2Setting.getStatus())
-                            || "running".equals(Gloable.group2Setting.getStatus())
-                            || "pause".equals(Gloable.group2Setting.getStatus()))) {
-                        //说明有设置项在起作用,如果继续操作的话将覆盖当前正在运行的
-                        showAlertDialog();
-                    }else{
-                        //说明没有任何设置在起作用在起作用就直接跳转播放
-                        startActivity(new Intent(this, PlayActivity.class));
-                    }
+                    //说明没有任何设置在起作用在起作用就直接跳转播放
+                    Intent intent = new Intent(this, PlayActivity.class);
+                    intent.putExtra("currPoint", currPoint);
+                    startActivity(intent);
                 }
                 break;
         }
@@ -311,22 +306,16 @@ public class SettingActivity extends AppCompatActivity {
             builder.setTitle("重复设置将覆盖之前的设置").setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                     if(alertDialog != null){
-                         alertDialog.dismiss();
-                     }
+                    alertDialog.dismiss();
                 }
-            }).setPositiveButton("yes", new DialogInterface.OnClickListener() {
+            }).setPositiveButton("continue", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    if(group1Setting!= null && group1Setting.isEnable()){
-                        Gloable.group1Setting = group1Setting;
-                        Gloable.group1Setting.setStatus("timing");
-                    }
-                    if(group2Setting!= null && group2Setting.isEnable()){
-                        Gloable.group2Setting = group2Setting;
-                        Gloable.group2Setting.setStatus("timing");
-                    }
-                    startActivity(new Intent(SettingActivity.this, PlayActivity.class));
+                    Global.status = Global.Timing;//设置为定时中,然后在具体的线程中进行判断对应的状态
+                    Global.currSetting = pointSetting;
+                    Intent intent = new Intent(SettingActivity.this, PlayActivity.class);
+                    intent.putExtra("currPoint", currPoint);
+                    startActivity(intent);
                 }
             });
             alertDialog = builder.create();

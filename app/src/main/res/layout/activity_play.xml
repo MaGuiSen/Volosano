@@ -56,9 +56,9 @@
         android:id="@+id/img_part"
         android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal"
-        android:layout_width="140dp"
+        android:layout_width="match_parent"
         android:layout_height="140dp"
-        android:src="@mipmap/icon_hand" />
+        android:src="@mipmap/icon_body_part_low_back" />
     <RelativeLayout
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"

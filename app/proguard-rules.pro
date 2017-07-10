@@ -76,6 +76,10 @@
 -dontwarn com.google.**
 -keep class com.google.gson.** {*;}
 
+
+-dontwarn com.volosano.modal.**
+-keep class com.volosano.modal.** {*;}
+
 #eventbus
 -keep class de.greenrobot.event.eventbus.** { *; }
 -keepclassmembers class ** {

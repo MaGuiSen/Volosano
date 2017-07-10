@@ -4,8 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <ImageView
+        android:id="@+id/img_splash"
         android:scaleType="fitXY"
         android:src="@mipmap/bg_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:text="Demo is out of date, please contact developer"
+        android:gravity="center"
+        android:id="@+id/txt_tip"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

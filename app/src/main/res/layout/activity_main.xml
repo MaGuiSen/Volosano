@@ -65,18 +65,19 @@
             android:id="@+id/img_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@mipmap/icon_body"/>
+            android:src="@mipmap/icon_body_neck"/>
     </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp">
+        android:layout_height="160dp">
         <ImageView
             android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/icon_whell_bg"/>
         <lib.widget.WheelView
+            android:overScrollMode="never"
             android:id="@+id/WheelView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

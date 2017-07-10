@@ -18,7 +18,7 @@ public class CircleProgressView extends View {
     private int mProgress = 30;
 
     private final int mCircleLineStrokeWidth = 8;
-    private final int mCircleLineStrokeOutWidth = 30;
+    private final int mCircleLineStrokeOutWidth = 26;
 
     private final int mTxtStrokeWidth = 2;
 
@@ -33,12 +33,18 @@ public class CircleProgressView extends View {
 
     private String mTxtHint2;
 
+    private int progressColor = 0xffffffff;
+
     public CircleProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         mContext = context;
         mRectF = new RectF();
         mPaint = new Paint();
+    }
+
+    public void setProgressColor(int progressColor){
+        this.progressColor = progressColor;
     }
 
     @Override
@@ -76,13 +82,13 @@ public class CircleProgressView extends View {
         mRectF.bottom = height - mCircleLineStrokeOutWidth / 2; // 右下角y
         mPaint.setStrokeWidth(mCircleLineStrokeOutWidth);
         mPaint.setStrokeCap(Paint.Cap.ROUND);//设置线条尾部有圆角效果
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(progressColor);
         canvas.drawArc(mRectF, -90, ((float) mProgress / mMaxProgress) * 360, false, mPaint);
 
         // 绘制进度文案显示
         mPaint.setStrokeWidth(mTxtStrokeWidth);
         String text = mProgress+"min";
-        int textHeight = height / 4;
+        int textHeight = height / 4-2;
         mPaint.setTextSize(textHeight);
         int textWidth = (int) mPaint.measureText(text, 0, text.length())-5;
         mPaint.setStyle(Paint.Style.FILL);

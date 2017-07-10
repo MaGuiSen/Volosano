@@ -169,10 +169,10 @@ public class WheelView extends ScrollView {
         TextView tv = new TextView(context);
         tv.setLayoutParams(new LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
         tv.setSingleLine(true);
-        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         tv.setText(item);
         tv.setGravity(Gravity.CENTER);
-        int padding = dip2px(15);
+        int padding = dip2px(10);
         tv.setPadding(padding, padding, padding, padding);
         if (0 == itemHeight) {
             itemHeight = getViewMeasuredHeight(tv);
@@ -217,7 +217,7 @@ public class WheelView extends ScrollView {
                 return;
             }
             if (position == i) {
-                itemView.setTextColor(Color.parseColor("#eeffffff"));
+                itemView.setTextColor(Color.parseColor("#ffF4BB1B"));
             } else {
                 itemView.setTextColor(Color.parseColor("#8ebbbbbb"));
             }

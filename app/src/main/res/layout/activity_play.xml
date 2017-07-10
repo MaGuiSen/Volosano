@@ -33,7 +33,7 @@
             android:layout_marginLeft="44dp"
             android:layout_marginRight="44dp"
             android:ellipsize="end"
-            android:text="Treatment In Progress"
+            android:text="Treatment"
             android:textStyle="bold"
             android:gravity="center"
             android:maxLength="20"
@@ -52,9 +52,17 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:background="@color/theme_color_orange_a"/>
+    <TextView
+        android:id="@+id/txt_part"
+        android:layout_margin="4dp"
+        android:layout_gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/theme_color_orange_a"
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <ImageView
         android:id="@+id/img_part"
-        android:layout_marginTop="5dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="140dp"

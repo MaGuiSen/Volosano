@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.volosano.modal.GroupSetting;
@@ -50,6 +51,10 @@ public class SettingActivity extends AppCompatActivity {
     LinearLayout activityMain;
     @Bind(R.id.txt_point)
     TextView txt_point;
+    @Bind(R.id.txt_part_tip)
+    TextView txt_part_tip;
+    @Bind(R.id.seek_voice)
+    SeekBar seek_voice;
 
     ChoiceTimeDialog choiceTimeDialog1,choiceTimeDialog2;
     ChoiceValueDialog choiceValueDialog1,choiceValueDialog2;
@@ -82,6 +87,15 @@ public class SettingActivity extends AppCompatActivity {
 
     private void initUI() {
         txt_point.setText(currPoint);
+        String partTip = "";
+        if("Neck".equals(currPoint)){
+            partTip = "Bl10-Sl3";
+        }else if("Shoulder".equals(currPoint)){
+            partTip = "GL15-Sl11";
+        }else if("Low Back".equals(currPoint)){
+            partTip = "BL57-BL40";
+        }
+        txt_part_tip.setText(partTip);
 
         refreshViewEnable(imgFirstEnable, txtFirstTime, txtFirstTimeLong, group1Setting.isEnable());
         refreshViewEnable(imgSecondEnable, txtSecondTime, txtSecondTimeLong, group2Setting.isEnable());
@@ -90,7 +104,26 @@ public class SettingActivity extends AppCompatActivity {
         refreshGroup(txtSecondTime, txtSecondTimeLong, group2Setting);
 
         //设置音量
-        txtVoice.setText(pointSetting.getIntensity() + "");
+        txtVoice.setText(1f*pointSetting.getIntensity()/maxVolume*10 + "");
+        seek_voice.setMax(10);
+        seek_voice.setProgress((int) (1f*pointSetting.getIntensity()/maxVolume*10));
+        seek_voice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
+                pointSetting.setIntensity((int) (1f*progress/10*maxVolume));
+                txtVoice.setText(1f*progress/10*maxVolume + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     public void refreshGroup(TextView timeV, TextView timeLongV, GroupSetting groupSetting){
@@ -114,7 +147,7 @@ public class SettingActivity extends AppCompatActivity {
             //说明缓存里面还没有
             pointSetting = new PointSetting();
             //设置当前音量
-            pointSetting.setIntensity(getCurrentVolume());
+            pointSetting.setIntensity(getCurrentVolume()/maxVolume*10);
             pointSetting.setPoint(currPoint);
         }
 
@@ -204,12 +237,12 @@ public class SettingActivity extends AppCompatActivity {
     public void refreshViewEnable(ImageView imageView, TextView time, TextView minuteLong, boolean isEnable){
         if(isEnable){
             imageView.setImageResource(R.drawable.circle_orange_a_border_gray_a);
-            time.setTextColor(0xff6F7B88);
-            minuteLong.setTextColor(0xff6F7B88);
-        }else{
-            imageView.setImageResource(R.drawable.circle_white_a_border_gray_a);
             time.setTextColor(0xffe6e6e6);
             minuteLong.setTextColor(0xffe6e6e6);
+        }else{
+            imageView.setImageResource(R.drawable.circle_white_a_border_gray_a);
+            time.setTextColor(0xff6F7B88);
+            minuteLong.setTextColor(0xff6F7B88);
         }
     }
 

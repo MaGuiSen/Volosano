@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.microedition.khronos.opengles.GL;
+
 /**
  * Created by mags on 2017/7/10.
  */
@@ -140,12 +142,55 @@ public class PlayManager {
                                             }
                                         });
                                     }
-                                }else if(GroupSetting.STATUS_COMPLETE.equals(group1.getStatus()) && GroupSetting.STATUS_COMPLETE.equals(group1.getStatus())){
+                                }else if(!GroupSetting.STATUS_COMPLETE.equals(group1.getStatus()) && !GroupSetting.STATUS_COMPLETE.equals(group1.getStatus())){
+                                    //则判断两个时间小，就是谁先
+                                    Calendar cal = Calendar.getInstance();
+                                    long currTime = cal.getTimeInMillis();
 
+                                    int hour1 = group1.getHour();
+                                    int minute1 = group1.getMinute();
+                                    cal.set(Calendar.HOUR_OF_DAY, hour1);
+                                    cal.set(Calendar.MINUTE, minute1);
+                                    long group1Time = cal.getTimeInMillis();
+
+                                    int hour2 = group2.getHour();
+                                    int minute2 = group2.getMinute();
+                                    cal.set(Calendar.HOUR_OF_DAY, hour2);
+                                    cal.set(Calendar.MINUTE, minute2);
+                                    long group2Time = cal.getTimeInMillis();
+                                    if(group1Time <= group2Time && group1Time <= currTime){
+                                        //说明可以开始播放了
+                                        Global.status = Global.Running;
+                                        timerRun = new TimerRun(group1.getTimeLong());
+                                        timerRun.start(new TimerRun.Listener() {
+                                            @Override
+                                            public void complete() {
+                                                group1.setStatus(GroupSetting.STATUS_COMPLETE);
+                                                Global.status = Global.Timing;
+                                                timerRun = null;
+                                            }
+                                        });
+                                    }else if(group2Time < group1Time && group2Time <= currTime){
+                                        //说明可以开始播放了
+                                        Global.status = Global.Running;
+                                        timerRun = new TimerRun(group2.getTimeLong());
+                                        timerRun.start(new TimerRun.Listener() {
+                                            @Override
+                                            public void complete() {
+                                                group2.setStatus(GroupSetting.STATUS_COMPLETE);
+                                                Global.status = Global.Timing;
+                                                timerRun = null;
+                                            }
+                                        });
+                                    }else{
+                                        //其他不做任何动作
+                                    }
                                 }
                             }else{
                                 Global.status = Global.Complete;
                             }
+                        }else{
+                            Global.status = Global.Complete;
                         }
                     }else{
                         //否则就不做动静
@@ -160,16 +205,23 @@ public class PlayManager {
     public void pause(){
         //改变状态
         //暂停播放音乐
+        Global.status = Global.Pause;
+        timerRun.pause();
     }
 
     public void resume(){
         //改变状态
         //开始播放音乐
+        Global.status = Global.Running;
+        timerRun.resume();
     }
 
     public void stop(){
         if(alarmTimer != null){
             alarmTimer.cancel();
         }
+        Global.status = Global.Stop;
+        Global.currSetting = null;
+        timerRun.stop();
     }
 }

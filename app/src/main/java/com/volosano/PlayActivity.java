@@ -8,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.volosano.manager.PlayManager;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,6 +30,8 @@ public class PlayActivity extends AppCompatActivity {
     ImageView imgPlay;
     @Bind(R.id.txt_second_time)
     TextView txtSecondTime;
+    @Bind(R.id.txt_part)
+    TextView txt_part;
     @Bind(R.id.progress_second)
     CircleProgressView progressSecond;
     @Bind(R.id.activity_main)
@@ -40,6 +44,7 @@ public class PlayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play);
         ButterKnife.bind(this);
         currPoint = getIntent().getStringExtra("currPoint");
+        txt_part.setText(currPoint);
         if("Neck".equals(currPoint)){
             imgPart.setImageResource(BodyImages[0]);
         }else if("Shoulder".equals(currPoint)){
@@ -47,6 +52,9 @@ public class PlayActivity extends AppCompatActivity {
         }else if("Low Back".equals(currPoint)){
             imgPart.setImageResource(BodyImages[2]);
         }
+        PlayManager.getInstance().start();
+        progressFirst.setProgressColor(0xffF4BB1B);
+        progressSecond.setProgressColor(0xffffffff);
     }
 
     @OnClick({R.id.img_back, R.id.img_msg, R.id.img_play})

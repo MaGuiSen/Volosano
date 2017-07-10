@@ -12,7 +12,8 @@ public class Global {
     public static String Running = "running";
     public static String Pause = "pause";
     public static String Stop = "stop";
-    public static String status = "";//timing running stop pause
+    public static String Complete = "complete";
+    public static String status = "";//timing running stop pause Complete
     public static PointSetting currSetting = null;//正在执行的痛点设置
 
     /**

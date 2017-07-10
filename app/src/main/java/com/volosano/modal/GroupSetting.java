@@ -9,11 +9,12 @@ public class GroupSetting {
     public static String STATUS_PAUSE = "pause";
     public static String STATUS_TIMING = "timing";
     public static String STATUS_RUNNING = "running";
+    public static String STATUS_COMPLETE = "complete";
 
     private int hour;//小时数
     private int minute;//分钟数
     private int timeLong;//时长
-    private String status = "stop";//timing ：定时中  pause :暂停中 stop 停止了 running 运行中
+    private String status = "stop";//timing ：定时中  pause :暂停中 stop 停止了 running 运行中 complete:完成播放
     private String name;//标识 group1 group2
     private boolean isEnable;//是否使能
 

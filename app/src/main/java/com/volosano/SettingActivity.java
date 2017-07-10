@@ -104,14 +104,14 @@ public class SettingActivity extends AppCompatActivity {
         refreshGroup(txtSecondTime, txtSecondTimeLong, group2Setting);
 
         //设置音量
-        txtVoice.setText(1f*pointSetting.getIntensity()/maxVolume*10 + "");
+        txtVoice.setText((int)(1f*pointSetting.getIntensity()/maxVolume*10) + "");
         seek_voice.setMax(10);
         seek_voice.setProgress((int) (1f*pointSetting.getIntensity()/maxVolume*10));
         seek_voice.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                 pointSetting.setIntensity((int) (1f*progress/10*maxVolume));
-                txtVoice.setText(1f*progress/10*maxVolume + "");
+                txtVoice.setText(progress + "");
             }
 
             @Override
@@ -147,7 +147,7 @@ public class SettingActivity extends AppCompatActivity {
             //说明缓存里面还没有
             pointSetting = new PointSetting();
             //设置当前音量
-            pointSetting.setIntensity(getCurrentVolume()/maxVolume*10);
+            pointSetting.setIntensity(getCurrentVolume());
             pointSetting.setPoint(currPoint);
         }
 
@@ -317,16 +317,20 @@ public class SettingActivity extends AppCompatActivity {
                     return;
                 }
 
-                //判断是否有全局的正在运行或者定时，有则会提示继续会将覆盖之前的设定 ：timing定时中  pause :暂停中 stop 停止了 running 运行
-                if(Global.isExecuting()){
-                    //说明有设置项在起作用,如果继续操作的话将覆盖当前正在运行的
-                    showAlertDialog();
-                }else {
-                    //说明没有任何设置在起作用在起作用就直接跳转播放
-                    Intent intent = new Intent(this, PlayActivity.class);
-                    intent.putExtra("currPoint", currPoint);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(this, PlayActivity.class);
+                intent.putExtra("currPoint", currPoint);
+                startActivity(intent);
+
+//                //判断是否有全局的正在运行或者定时，有则会提示继续会将覆盖之前的设定 ：timing定时中  pause :暂停中 stop 停止了 running 运行
+//                if(Global.isExecuting()){
+//                    //说明有设置项在起作用,如果继续操作的话将覆盖当前正在运行的
+//                    showAlertDialog();
+//                }else {
+//                    //说明没有任何设置在起作用在起作用就直接跳转播放
+//                    Intent intent = new Intent(this, PlayActivity.class);
+//                    intent.putExtra("currPoint", currPoint);
+//                    startActivity(intent);
+//                }
                 break;
         }
     }

@@ -1,6 +1,8 @@
 package com.volosano;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,7 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.volosano.manager.PlayManager;
+import com.volosano.modal.GroupSetting;
+import com.volosano.modal.PointSetting;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +41,11 @@ public class PlayActivity extends AppCompatActivity {
     LinearLayout activityMain;
 
     String currPoint = "";
+    PointSetting currPointSetting = null;
+    GroupSetting group1 = null;
+    GroupSetting group2 = null;
+    boolean isPlay = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +60,41 @@ public class PlayActivity extends AppCompatActivity {
         }else if("Low Back".equals(currPoint)){
             imgPart.setImageResource(BodyImages[2]);
         }
-        PlayManager.getInstance().start();
-        progressFirst.setProgressColor(0xffF4BB1B);
+        currPointSetting = Global.currSetting;
+        group1 = currPointSetting.getGroupSetting1();
+        group2 = currPointSetting.getGroupSetting2();
+        setVoice(currPointSetting.getIntensity());
+        setCircleProgress();
+    }
+
+    private void setCircleProgress() {
+        int hour = group1.getHour();
+        int minute = group1.getMinute();
+        int timeLong = group1.getTimeLong();
+        boolean firstEnable = group1.isEnable();
+        String timeStatus = hour > 12 ? "am" : "pm";
+        String minuteString = (minute < 10 ? "0":"") + minute;
+        txtFirstTime.setText(hour+":"+minuteString+timeStatus);
+        progressFirst.setProgress(timeLong);
+        //0xffffffff 0xffF4BB1B
+        txtFirstTime.setTextColor(0xffffffff);
+        progressFirst.setProgressColor(0xffffffff);
+
+
+        int hour2 = group2.getHour();
+        int minute2 = group2.getMinute();
+        int timeLong2 = group2.getTimeLong();
+        String timeStatus2 = hour > 12 ? "am" : "pm";
+        String minuteString2 = (minute2 < 10 ? "0":"") + minute2;
+        txtSecondTime.setText(hour2+":"+minuteString2+timeStatus2);
+        txtSecondTime.setTextColor(0xffffffff);
+        progressSecond.setProgress(timeLong2);
         progressSecond.setProgressColor(0xffffffff);
+    }
+
+    private void setVoice(int voice) {
+        AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, voice, 0); //tempVolume:音量绝对值
     }
 
     @OnClick({R.id.img_back, R.id.img_msg, R.id.img_play})
@@ -67,6 +107,16 @@ public class PlayActivity extends AppCompatActivity {
                 startActivity(new Intent(this, ContactActivity.class));
                 break;
             case R.id.img_play:
+                isPlay = !isPlay;
+                if(isPlay){
+                    //开启音乐
+                    //开启波形图
+                    //变化为暂停键
+                }else{
+                    //暂停音乐
+                    //停止波形图
+                    //变化为开始键
+                }
                 break;
         }
     }

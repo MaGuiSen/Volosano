@@ -130,8 +130,8 @@
             <ImageView
                 android:id="@+id/img_play"
                 android:src="@mipmap/icon_stop"
-                android:layout_width="60dp"
-                android:layout_height="60dp"/>
+                android:layout_width="44dp"
+                android:layout_height="44dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"

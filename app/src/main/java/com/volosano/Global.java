@@ -10,10 +10,10 @@ import com.volosano.modal.PointSetting;
 public class Global {
     public static String Timing = "timing";
     public static String Running = "running";
-    public static String Pause = "pause";
+    public static String Pause = "pausePlay";
     public static String Stop = "stop";
     public static String Complete = "complete";
-    public static String status = "";//timing running stop pause Complete
+    public static String status = "";//timing running stop pausePlay Complete
     public static PointSetting currSetting = null;//正在执行的痛点设置
 
     /**

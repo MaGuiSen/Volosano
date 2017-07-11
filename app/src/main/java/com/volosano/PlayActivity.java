@@ -1,9 +1,12 @@
 package com.volosano;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,6 +15,8 @@ import android.widget.TextView;
 
 import com.volosano.modal.GroupSetting;
 import com.volosano.modal.PointSetting;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,6 +56,7 @@ public class PlayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
         ButterKnife.bind(this);
+        initPlayer();
         currPoint = getIntent().getStringExtra("currPoint");
         txt_part.setText(currPoint);
         if("Neck".equals(currPoint)){
@@ -60,7 +66,7 @@ public class PlayActivity extends AppCompatActivity {
         }else if("Low Back".equals(currPoint)){
             imgPart.setImageResource(BodyImages[2]);
         }
-        currPointSetting = Global.currSetting;
+        currPointSetting = MyApplication.currSetting;
         group1 = currPointSetting.getGroupSetting1();
         group2 = currPointSetting.getGroupSetting2();
         setVoice(currPointSetting.getIntensity());
@@ -101,23 +107,104 @@ public class PlayActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                finish();
+                onBackPressed();
                 break;
             case R.id.img_msg:
                 startActivity(new Intent(this, ContactActivity.class));
                 break;
             case R.id.img_play:
                 isPlay = !isPlay;
-                if(isPlay){
-                    //开启音乐
-                    //开启波形图
-                    //变化为暂停键
-                }else{
-                    //暂停音乐
-                    //停止波形图
-                    //变化为开始键
+                try{
+                    if(isPlay){
+                        //开启音乐
+                        startPlay();
+                        //开启波形图
+                        wareView.start();
+                        //变化为暂停键
+                        imgPlay.setImageResource(R.mipmap.icon_stop);
+                    }else{
+                        //暂停音乐
+                        pausePlay();
+                        //停止波形图
+                        wareView.pause();
+                        //变化为开始键
+                        imgPlay.setImageResource(R.mipmap.icon_start_orange);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isPlay){
+            showAlertDialog();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+    AlertDialog alertDialog = null;
+    public void showAlertDialog(){
+        if(alertDialog == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("System is running, if go back,the system will stop.").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    alertDialog.dismiss();
+                }
+            }).setPositiveButton("GoBack", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //暂停音乐
+                    stopPlay();
+                    //停止波形图
+                    wareView.pause();
+                    //变化为开始键
+                    imgPlay.setImageResource(R.mipmap.icon_start_orange);
+                    finish();
+                }
+            });
+            alertDialog = builder.create();
+        }
+        alertDialog.show();
+    }
+
+    MediaPlayer player = null;
+    public void initPlayer(){
+        player = MediaPlayer.create(this, R.raw.bg);
+        player.setLooping(true);
+    }
+
+    public void startPlay(){
+        try {
+            player.start();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void stopPlay(){
+        try {
+            if (player != null) {
+                player.stop();
+                player.release();
+                player = null;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void pausePlay(){
+        try {
+            if(player.isPlaying()) {
+                player.pause();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }

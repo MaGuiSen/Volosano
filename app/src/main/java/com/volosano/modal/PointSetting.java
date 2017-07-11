@@ -1,11 +1,13 @@
 package com.volosano.modal;
 
+import java.io.Serializable;
+
 /**
  * Created by mags on 2017/7/10.
  * 痛点设置
  */
 
-public class PointSetting {
+public class PointSetting implements Serializable{
     private int Intensity = -1;//音量
     private String point;//部位
     private GroupSetting groupSetting1 = null;

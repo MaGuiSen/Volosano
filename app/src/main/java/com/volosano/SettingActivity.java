@@ -309,6 +309,7 @@ public class SettingActivity extends AppCompatActivity {
                 //这里将当前设置缓存到内存中
                 pointSetting.setGroupSetting1(group1Setting);
                 pointSetting.setGroupSetting2(group2Setting);
+                MyApplication.currSetting = pointSetting;
                 CacheUtil.set(currPoint, pointSetting);
 
                 //判断两个组是否有一组以上使能了
@@ -321,7 +322,7 @@ public class SettingActivity extends AppCompatActivity {
                 intent.putExtra("currPoint", currPoint);
                 startActivity(intent);
 
-//                //判断是否有全局的正在运行或者定时，有则会提示继续会将覆盖之前的设定 ：timing定时中  pause :暂停中 stop 停止了 running 运行
+//                //判断是否有全局的正在运行或者定时，有则会提示继续会将覆盖之前的设定 ：timing定时中  pausePlay :暂停中 stop 停止了 running 运行
 //                if(Global.isExecuting()){
 //                    //说明有设置项在起作用,如果继续操作的话将覆盖当前正在运行的
 //                    showAlertDialog();
@@ -349,7 +350,7 @@ public class SettingActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Global.status = Global.Timing;//设置为定时中,然后在具体的线程中进行判断对应的状态
-                    Global.currSetting = pointSetting;
+                    MyApplication.currSetting = pointSetting;
                     Intent intent = new Intent(SettingActivity.this, PlayActivity.class);
                     intent.putExtra("currPoint", currPoint);
                     startActivity(intent);

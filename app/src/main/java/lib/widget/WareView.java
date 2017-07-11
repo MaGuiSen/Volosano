@@ -27,6 +27,7 @@ public class WareView extends View {
     private final Paint paint;
     private final Context context;
     List<PointRun> pointList = new ArrayList<>();
+    boolean isRun = false;
     public WareView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
@@ -38,6 +39,16 @@ public class WareView extends View {
         //设置阴影效果，注意setLayerType(LAYER_TYPE_SOFTWARE, null);
         paint.setShadowLayer(12f, 0, 0, 0xff5d9a00);
         setLayerType(LAYER_TYPE_SOFTWARE, null);
+    }
+
+    public void pause(){
+        isRun = false;
+        postInvalidate();
+    }
+
+    public void start(){
+        isRun = true;
+        postInvalidate();
     }
 
     @Override
@@ -125,7 +136,9 @@ public class WareView extends View {
         if(last.isOut(width+spaceX)){
             pointList.remove(size - 1);
         }
-        postInvalidateDelayed(100);
+        if(isRun) {
+            postInvalidateDelayed(100);
+        }
     }
 
     class PointRun{

@@ -3,6 +3,7 @@ package com.volosano.manager;
 import android.util.Log;
 
 import com.volosano.Global;
+import com.volosano.MyApplication;
 import com.volosano.modal.GroupSetting;
 import com.volosano.modal.PointSetting;
 
@@ -39,7 +40,7 @@ public class PlayManager {
                     //如果当前状态是timing 计时中，则判断是否到时间
                     if(Global.Timing.equals(Global.status)){
                         //获取组1的设置信息
-                        PointSetting currSetting = Global.currSetting;
+                        PointSetting currSetting = MyApplication.currSetting;
                         if(currSetting != null){
                             final GroupSetting group1 = currSetting.getGroupSetting1();
                             final GroupSetting group2 = currSetting.getGroupSetting2();
@@ -221,7 +222,7 @@ public class PlayManager {
             alarmTimer.cancel();
         }
         Global.status = Global.Stop;
-        Global.currSetting = null;
+        MyApplication.currSetting = null;
         timerRun.stop();
     }
 }

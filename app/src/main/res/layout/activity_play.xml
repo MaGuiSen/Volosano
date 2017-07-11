@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content" />
             <ImageView
                 android:id="@+id/img_play"
-                android:src="@mipmap/icon_stop"
+                android:src="@mipmap/icon_start_orange"
                 android:layout_width="44dp"
                 android:layout_height="44dp"/>
         </LinearLayout>

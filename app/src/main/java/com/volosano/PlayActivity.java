@@ -17,6 +17,8 @@ import com.volosano.modal.GroupSetting;
 import com.volosano.modal.PointSetting;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -150,7 +152,7 @@ public class PlayActivity extends AppCompatActivity {
     public void showAlertDialog(){
         if(alertDialog == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("System is running, if go back,the system will stop.").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            builder.setTitle("System is running, if goBack,the system will stop.").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     alertDialog.dismiss();
@@ -180,6 +182,9 @@ public class PlayActivity extends AppCompatActivity {
 
     public void startPlay(){
         try {
+            if(player == null){
+                initPlayer();
+            }
             player.start();
         }catch (Exception e){
             e.printStackTrace();
@@ -205,6 +210,72 @@ public class PlayActivity extends AppCompatActivity {
             }
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+
+    Timer progressTimer = null;
+    int progress1 = 0;
+    int progress2 = 0;
+    public void runProgress1(){
+        if(progressTimer == null){
+            progressTimer = new Timer();
+            progressTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //一秒过去啦
+                    if(isPlay) {
+                        if(group1.isEnable() && progress1 < group1.getTimeLong()*60){
+                            progress1 += 1;
+                            //刷新界面
+                            //设置progress1为橙色 progress2为白色
+                            txtFirstTime.setTextColor(0xffF4BB1B);
+                            progressFirst.setProgressColor(0xffF4BB1B);
+
+                            txtSecondTime.setTextColor(0xffffffff);
+                            progressSecond.setProgressColor(0xffffffff);
+                        }else if(progress1>= group1.getTimeLong()*60 && progress1 < group1.getTimeLong()*60+10){
+                            progress1 += 1;
+                            //只是做等待10s
+                            //设置progress1为白色 progress2为白色
+
+                            txtFirstTime.setTextColor(0xffffffff);
+                            progressFirst.setProgressColor(0xffffffff);
+
+                            txtSecondTime.setTextColor(0xffffffff);
+                            progressSecond.setProgressColor(0xffffffff);
+                        }else if(group2.isEnable() && progress2 < group2.getTimeLong()*60){
+                            //刷新第二个界面
+                            //设置progress1为白色 progress2为橙色
+
+                            txtFirstTime.setTextColor(0xffffffff);
+                            progressFirst.setProgressColor(0xffffffff);
+
+                            txtSecondTime.setTextColor(0xffF4BB1B);
+                            progressSecond.setProgressColor(0xffF4BB1B);
+
+                        }
+                        //如果两个进度都到100%了，就说明可以清除进度值，但是不刷新进度条，同时关闭正在播放
+                        if(progress1> group1.getTimeLong() && progress2> group1.getTimeLong()){
+                            //设置progress1为白色 progress2为白色
+                            txtFirstTime.setTextColor(0xffffffff);
+                            progressFirst.setProgressColor(0xffffffff);
+
+                            txtSecondTime.setTextColor(0xffffffff);
+                            progressSecond.setProgressColor(0xffffffff);
+
+                            progress1 = 0;
+                            progress2 = 0;
+                            isPlay = false;
+                            //暂停音乐
+                            stopPlay();
+                            //停止波形图
+                            wareView.stop();
+                            //变化为开始键
+                            imgPlay.setImageResource(R.mipmap.icon_start_orange);
+                        }
+                    }
+                }
+            }, 1000,1000);
         }
     }
 }

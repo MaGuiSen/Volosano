@@ -51,6 +51,13 @@ public class WareView extends View {
         postInvalidate();
     }
 
+
+    public void stop(){
+        isRun = false;
+        pointList.clear();
+        postInvalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

@@ -83,7 +83,8 @@ public class PlayActivity extends AppCompatActivity {
         String timeStatus = hour > 12 ? "am" : "pm";
         String minuteString = (minute < 10 ? "0":"") + minute;
         txtFirstTime.setText(hour+":"+minuteString+timeStatus);
-        progressFirst.setProgress(timeLong);
+        progressFirst.setProgress(0, timeLong+"min");
+        progressFirst.setMaxProgress(timeLong*60);
         //0xffffffff 0xffF4BB1B
         txtFirstTime.setTextColor(0xffffffff);
         progressFirst.setProgressColor(0xffffffff);
@@ -96,7 +97,8 @@ public class PlayActivity extends AppCompatActivity {
         String minuteString2 = (minute2 < 10 ? "0":"") + minute2;
         txtSecondTime.setText(hour2+":"+minuteString2+timeStatus2);
         txtSecondTime.setTextColor(0xffffffff);
-        progressSecond.setProgress(timeLong2);
+        progressSecond.setProgress(0, timeLong2+"min");
+        progressSecond.setMaxProgress(timeLong2*60);
         progressSecond.setProgressColor(0xffffffff);
     }
 
@@ -124,6 +126,7 @@ public class PlayActivity extends AppCompatActivity {
                         wareView.start();
                         //变化为暂停键
                         imgPlay.setImageResource(R.mipmap.icon_stop);
+                        runProgress();
                     }else{
                         //暂停音乐
                         pausePlay();
@@ -166,6 +169,7 @@ public class PlayActivity extends AppCompatActivity {
                     wareView.pause();
                     //变化为开始键
                     imgPlay.setImageResource(R.mipmap.icon_start_orange);
+                    stopProgress();
                     finish();
                 }
             });
@@ -216,7 +220,17 @@ public class PlayActivity extends AppCompatActivity {
     Timer progressTimer = null;
     int progress1 = 0;
     int progress2 = 0;
-    public void runProgress1(){
+
+    public void stopProgress(){
+        if(progressTimer != null){
+            progressTimer.cancel();
+            progressTimer = null;
+        }
+        progress1 = 0;
+        progress2 = 0;
+    }
+
+    public void runProgress(){
         if(progressTimer == null){
             progressTimer = new Timer();
             progressTimer.schedule(new TimerTask() {
@@ -233,6 +247,7 @@ public class PlayActivity extends AppCompatActivity {
 
                             txtSecondTime.setTextColor(0xffffffff);
                             progressSecond.setProgressColor(0xffffffff);
+                            progressFirst.setProgress(progress1);
                         }else if(progress1>= group1.getTimeLong()*60 && progress1 < group1.getTimeLong()*60+10){
                             progress1 += 1;
                             //只是做等待10s
@@ -253,6 +268,7 @@ public class PlayActivity extends AppCompatActivity {
                             txtSecondTime.setTextColor(0xffF4BB1B);
                             progressSecond.setProgressColor(0xffF4BB1B);
 
+                            progressSecond.setProgress(progress2);
                         }
                         //如果两个进度都到100%了，就说明可以清除进度值，但是不刷新进度条，同时关闭正在播放
                         if(progress1> group1.getTimeLong() && progress2> group1.getTimeLong()){

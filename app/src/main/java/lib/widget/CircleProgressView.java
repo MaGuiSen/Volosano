@@ -34,6 +34,7 @@ public class CircleProgressView extends View {
     private String mTxtHint2;
 
     private int progressColor = 0xffffffff;
+    private String showText = "";
 
     public CircleProgressView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -87,7 +88,7 @@ public class CircleProgressView extends View {
 
         // 绘制进度文案显示
         mPaint.setStrokeWidth(mTxtStrokeWidth);
-        String text = mProgress+"min";
+        String text = TextUtils.isEmpty(showText)?mProgress+"min":showText;
         int textHeight = height / 4-2;
         mPaint.setTextSize(textHeight);
         int textWidth = (int) mPaint.measureText(text, 0, text.length())-5;
@@ -126,6 +127,12 @@ public class CircleProgressView extends View {
 
     public void setProgress(int progress) {
         this.mProgress = progress;
+        this.invalidate();
+    }
+
+    public void setProgress(int progress, String showText) {
+        this.mProgress = progress;
+        this.showText = showText;
         this.invalidate();
     }
 

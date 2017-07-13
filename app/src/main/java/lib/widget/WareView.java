@@ -42,17 +42,26 @@ public class WareView extends View {
     }
 
     public void pause(){
+        if(!isRun){
+            return;
+        }
         isRun = false;
         postInvalidate();
     }
 
     public void start(){
+        if(isRun){
+            return;
+        }
         isRun = true;
         postInvalidate();
     }
 
 
     public void stop(){
+        if(!isRun){
+            return;
+        }
         isRun = false;
         pointList.clear();
         postInvalidate();

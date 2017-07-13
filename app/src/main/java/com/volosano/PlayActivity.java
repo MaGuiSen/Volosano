@@ -136,27 +136,6 @@ public class PlayActivity extends AppCompatActivity {
             case R.id.img_play:
                 isPlay = !isPlay;
                 runProgress();
-                try{
-                    if(isPlay){
-//                        //开启音乐
-//                        startPlay();
-//                        //开启波形图
-//                        wareView.start();
-//                        //变化为暂停键
-//                        imgPlay.setImageResource(R.mipmap.icon_stop);
-                        isTimeout = true;
-                    }else{
-                        isTimeout = false;
-                        //暂停音乐
-                        pausePlay();
-                        //停止波形图
-                        wareView.pause();
-                        //变化为开始键
-                        imgPlay.setImageResource(R.mipmap.icon_start_orange);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
                 break;
         }
     }
@@ -182,13 +161,13 @@ public class PlayActivity extends AppCompatActivity {
             }).setPositiveButton("GoBack", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    isPlay = false;
                     //暂停音乐
                     stopPlay();
                     //停止波形图
                     wareView.pause();
                     //变化为开始键
                     imgPlay.setImageResource(R.mipmap.icon_start_orange);
-                    stopProgress();
                     finish();
                 }
             });
@@ -207,6 +186,9 @@ public class PlayActivity extends AppCompatActivity {
         try {
             if(player == null){
                 initPlayer();
+            }
+            if(player.isPlaying()){
+                return;
             }
             player.start();
         }catch (Exception e){
@@ -236,45 +218,26 @@ public class PlayActivity extends AppCompatActivity {
         }
     }
 
-    Timer progressTimer = null;
-    int progress1 = 0;
-    int progress2 = 0;
-
-    public void stopProgress(){
-        if(progressTimer != null){
-            progressTimer.cancel();
-            progressTimer = null;
-        }
-        progress1 = 0;
-        progress2 = 0;
-    }
-
-    boolean isTimeout = false;
     boolean group1IsFinish = false;
     boolean group2IsFinish = false;
     int waitSpace = 0;//等待时间间隔
-    int timerTotal = 0;
+    int timerTotal1 = 0;
+    int timerTotal2 = 0;
 
     public void group1Use(){
-        if(isTimeout){
-            timerTotal++;
+        if(isPlay){
+            timerTotal1++;
         }
-
-        if(timerTotal > 0 && timerTotal <= group1.getTimeLong()*60){
-            progressFirst.setProgress(timerTotal);
+        if(timerTotal1 >= 0 && timerTotal1 <= group1.getTimeLong()*60){
+            progressFirst.setProgress(timerTotal1);
             group1IsFinish = false;
         }else{
             group1IsFinish = true;
-            isTimeout = false;
-            timerTotal = 0;
+            timerTotal1 = 0;
             isPlay = false;
-            //重置音乐
-            stopPlay();
-            //停止波形图
-            wareView.stop();
-            //变化为开始键
-            imgPlay.setImageResource(R.mipmap.icon_start_orange);
+            progressFirst.setProgress(0);
         }
+        refresh(group1IsFinish);
         //设置group1进度条和数值颜色
         if(isPlay){
             txtFirstTime.setTextColor(0xffF4BB1B);
@@ -288,24 +251,19 @@ public class PlayActivity extends AppCompatActivity {
     }
 
     public void group2Use(){
-        if(isTimeout){
-            timerTotal++;
+        if(isPlay){
+            timerTotal2++;
         }
-        if(timerTotal > 0 && timerTotal <= group2.getTimeLong()*60){
-            progressSecond.setProgress(timerTotal);
+        if(timerTotal2 >= 0 && timerTotal2 <= group2.getTimeLong()*60){
+            progressSecond.setProgress(timerTotal2);
             group2IsFinish = false;
         }else{
             group2IsFinish = true;
-            isTimeout = false;
-            timerTotal = 0;
+            timerTotal2 = 0;
             isPlay = false;
-            //重置音乐
-            stopPlay();
-            //停止波形图
-            wareView.stop();
-            //变化为开始键
-            imgPlay.setImageResource(R.mipmap.icon_start_orange);
+            progressSecond.setProgress(0);
         }
+        refresh(group2IsFinish);
         //设置group1进度条和数值颜色
         if(isPlay){
             txtSecondTime.setTextColor(0xffF4BB1B);
@@ -318,19 +276,52 @@ public class PlayActivity extends AppCompatActivity {
         progressFirst.setProgressColor(0xffffffff);
     }
 
+    public void refresh(boolean groupIsFinish){
+        if(isPlay){
+            //开启波形图
+            wareView.start();
+            //播放
+            startPlay();
+            //变化为暂停键
+            imgPlay.setImageResource(R.mipmap.icon_stop);
+        }else{
+            if(groupIsFinish){
+                //停音乐
+                stopPlay();
+                //重置波形图
+                wareView.stop();
+            }else{
+                //暂停音乐
+                pausePlay();
+                //停止波形图
+                wareView.pause();
+            }
+            //变化为开始键
+            imgPlay.setImageResource(R.mipmap.icon_start_orange);
+        }
+    }
+
     public void bothUse(){
         if(group1IsFinish && group2IsFinish){
             waitSpace = 0;
             group1IsFinish = false;
             group2IsFinish = false;
         }
+
         if(group1IsFinish){
             if(waitSpace > 10){
                 //说明等待了十秒，可以加载第二组了
-
+                if(timerTotal2 == 0){
+                    isPlay = true;
+                }
                 group2Use();
             }else{
                 waitSpace ++;
+                //如果在等待过程中 用户设置为播放，那就要直接进行播放
+                if(isPlay){
+                    waitSpace = 11;
+                    group2Use();
+                }
             }
         }else{
             group1Use();

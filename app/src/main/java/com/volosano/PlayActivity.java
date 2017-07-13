@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,6 +56,20 @@ public class PlayActivity extends AppCompatActivity {
     GroupSetting group2 = null;
     boolean isPlay = false;
 
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            //一秒过去啦
+            if(group1.isEnable() && group2.isEnable()){
+                bothUse();
+            }else if(group1.isEnable() && !group2.isEnable()){
+                group1Use();
+            }else if(!group1.isEnable() && group2.isEnable()){
+                group2Use();
+            }
+            handler.sendEmptyMessageDelayed(100,1000);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +97,7 @@ public class PlayActivity extends AppCompatActivity {
         int minute = group1.getMinute();
         int timeLong = group1.getTimeLong();
         boolean firstEnable = group1.isEnable();
-        String timeStatus = hour > 12 ? "am" : "pm";
+        String timeStatus = hour > 12 ? "pm" : "am";
         String minuteString = (minute < 10 ? "0":"") + minute;
         txtFirstTime.setText(hour+":"+minuteString+timeStatus);
         progressFirst.setProgress(0, timeLong+"min");
@@ -93,7 +110,7 @@ public class PlayActivity extends AppCompatActivity {
         int hour2 = group2.getHour();
         int minute2 = group2.getMinute();
         int timeLong2 = group2.getTimeLong();
-        String timeStatus2 = hour > 12 ? "am" : "pm";
+        String timeStatus2 = hour > 12 ? "pm" : "am";
         String minuteString2 = (minute2 < 10 ? "0":"") + minute2;
         txtSecondTime.setText(hour2+":"+minuteString2+timeStatus2);
         txtSecondTime.setTextColor(0xffffffff);
@@ -118,16 +135,18 @@ public class PlayActivity extends AppCompatActivity {
                 break;
             case R.id.img_play:
                 isPlay = !isPlay;
+                runProgress();
                 try{
                     if(isPlay){
-                        //开启音乐
-                        startPlay();
-                        //开启波形图
-                        wareView.start();
-                        //变化为暂停键
-                        imgPlay.setImageResource(R.mipmap.icon_stop);
-                        runProgress();
+//                        //开启音乐
+//                        startPlay();
+//                        //开启波形图
+//                        wareView.start();
+//                        //变化为暂停键
+//                        imgPlay.setImageResource(R.mipmap.icon_stop);
+                        isTimeout = true;
                     }else{
+                        isTimeout = false;
                         //暂停音乐
                         pausePlay();
                         //停止波形图
@@ -230,68 +249,99 @@ public class PlayActivity extends AppCompatActivity {
         progress2 = 0;
     }
 
+    boolean isTimeout = false;
+    boolean group1IsFinish = false;
+    boolean group2IsFinish = false;
+    int waitSpace = 0;//等待时间间隔
+    int timerTotal = 0;
+
+    public void group1Use(){
+        if(isTimeout){
+            timerTotal++;
+        }
+
+        if(timerTotal > 0 && timerTotal <= group1.getTimeLong()*60){
+            progressFirst.setProgress(timerTotal);
+            group1IsFinish = false;
+        }else{
+            group1IsFinish = true;
+            isTimeout = false;
+            timerTotal = 0;
+            isPlay = false;
+            //重置音乐
+            stopPlay();
+            //停止波形图
+            wareView.stop();
+            //变化为开始键
+            imgPlay.setImageResource(R.mipmap.icon_start_orange);
+        }
+        //设置group1进度条和数值颜色
+        if(isPlay){
+            txtFirstTime.setTextColor(0xffF4BB1B);
+            progressFirst.setProgressColor(0xffF4BB1B);
+        }else{
+            txtFirstTime.setTextColor(0xffffffff);
+            progressFirst.setProgressColor(0xffffffff);
+        }
+        txtSecondTime.setTextColor(0xffffffff);
+        progressSecond.setProgressColor(0xffffffff);
+    }
+
+    public void group2Use(){
+        if(isTimeout){
+            timerTotal++;
+        }
+        if(timerTotal > 0 && timerTotal <= group2.getTimeLong()*60){
+            progressSecond.setProgress(timerTotal);
+            group2IsFinish = false;
+        }else{
+            group2IsFinish = true;
+            isTimeout = false;
+            timerTotal = 0;
+            isPlay = false;
+            //重置音乐
+            stopPlay();
+            //停止波形图
+            wareView.stop();
+            //变化为开始键
+            imgPlay.setImageResource(R.mipmap.icon_start_orange);
+        }
+        //设置group1进度条和数值颜色
+        if(isPlay){
+            txtSecondTime.setTextColor(0xffF4BB1B);
+            progressSecond.setProgressColor(0xffF4BB1B);
+        }else{
+            txtSecondTime.setTextColor(0xffffffff);
+            progressSecond.setProgressColor(0xffffffff);
+        }
+        txtFirstTime.setTextColor(0xffffffff);
+        progressFirst.setProgressColor(0xffffffff);
+    }
+
+    public void bothUse(){
+        if(group1IsFinish && group2IsFinish){
+            waitSpace = 0;
+            group1IsFinish = false;
+            group2IsFinish = false;
+        }
+        if(group1IsFinish){
+            if(waitSpace > 10){
+                //说明等待了十秒，可以加载第二组了
+
+                group2Use();
+            }else{
+                waitSpace ++;
+            }
+        }else{
+            group1Use();
+        }
+    }
+
+    boolean timerIsInit = false;
     public void runProgress(){
-        if(progressTimer == null){
-            progressTimer = new Timer();
-            progressTimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    //一秒过去啦
-                    if(isPlay) {
-                        if(group1.isEnable() && progress1 < group1.getTimeLong()*60){
-                            progress1 += 1;
-                            //刷新界面
-                            //设置progress1为橙色 progress2为白色
-                            txtFirstTime.setTextColor(0xffF4BB1B);
-                            progressFirst.setProgressColor(0xffF4BB1B);
-
-                            txtSecondTime.setTextColor(0xffffffff);
-                            progressSecond.setProgressColor(0xffffffff);
-                            progressFirst.setProgress(progress1);
-                        }else if(progress1>= group1.getTimeLong()*60 && progress1 < group1.getTimeLong()*60+10){
-                            progress1 += 1;
-                            //只是做等待10s
-                            //设置progress1为白色 progress2为白色
-
-                            txtFirstTime.setTextColor(0xffffffff);
-                            progressFirst.setProgressColor(0xffffffff);
-
-                            txtSecondTime.setTextColor(0xffffffff);
-                            progressSecond.setProgressColor(0xffffffff);
-                        }else if(group2.isEnable() && progress2 < group2.getTimeLong()*60){
-                            //刷新第二个界面
-                            //设置progress1为白色 progress2为橙色
-
-                            txtFirstTime.setTextColor(0xffffffff);
-                            progressFirst.setProgressColor(0xffffffff);
-
-                            txtSecondTime.setTextColor(0xffF4BB1B);
-                            progressSecond.setProgressColor(0xffF4BB1B);
-
-                            progressSecond.setProgress(progress2);
-                        }
-                        //如果两个进度都到100%了，就说明可以清除进度值，但是不刷新进度条，同时关闭正在播放
-                        if(progress1> group1.getTimeLong() && progress2> group1.getTimeLong()){
-                            //设置progress1为白色 progress2为白色
-                            txtFirstTime.setTextColor(0xffffffff);
-                            progressFirst.setProgressColor(0xffffffff);
-
-                            txtSecondTime.setTextColor(0xffffffff);
-                            progressSecond.setProgressColor(0xffffffff);
-
-                            progress1 = 0;
-                            progress2 = 0;
-                            isPlay = false;
-                            //暂停音乐
-                            stopPlay();
-                            //停止波形图
-                            wareView.stop();
-                            //变化为开始键
-                            imgPlay.setImageResource(R.mipmap.icon_start_orange);
-                        }
-                    }
-                }
-            }, 1000,1000);
+        if(!timerIsInit){
+            timerIsInit = true;
+            handler.sendEmptyMessage(100);
         }
     }
 }

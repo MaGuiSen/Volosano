@@ -130,7 +130,7 @@ public class SettingActivity extends AppCompatActivity {
         int hour = groupSetting.getHour();
         int minute = groupSetting.getMinute();
         int timeLong = groupSetting.getTimeLong();
-        String timeStatus = hour > 12 ? "am" : "pm";
+        String timeStatus = hour > 12 ? "pm" : "am";
         String minuteString = (minute < 10 ? "0":"") + minute;
         timeV.setText(hour+":"+minuteString+timeStatus);
         timeLongV.setText(timeLong+"min");

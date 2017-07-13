@@ -93,7 +93,7 @@ public class CircleProgressView extends View {
         mPaint.setTextSize(textHeight);
         int textWidth = (int) mPaint.measureText(text, 0, text.length())-5;
         mPaint.setStyle(Paint.Style.FILL);
-        canvas.drawText(text, width / 2 - textWidth / 2, height / 2 + textHeight / 2, mPaint);
+        canvas.drawText(text, width / 2 - textWidth / 2, height / 2 + textHeight / 2-4, mPaint);
 
         if (!TextUtils.isEmpty(mTxtHint1)) {
             mPaint.setStrokeWidth(mTxtStrokeWidth);

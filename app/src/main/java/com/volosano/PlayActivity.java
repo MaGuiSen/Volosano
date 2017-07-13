@@ -309,7 +309,7 @@ public class PlayActivity extends AppCompatActivity {
         }
 
         if(group1IsFinish){
-            if(waitSpace > 10){
+            if(waitSpace > 5){
                 //说明等待了十秒，可以加载第二组了
                 if(timerTotal2 == 0){
                     isPlay = true;
@@ -319,7 +319,7 @@ public class PlayActivity extends AppCompatActivity {
                 waitSpace ++;
                 //如果在等待过程中 用户设置为播放，那就要直接进行播放
                 if(isPlay){
-                    waitSpace = 11;
+                    waitSpace = 6;
                     group2Use();
                 }
             }

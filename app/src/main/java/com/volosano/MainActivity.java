@@ -1,10 +1,14 @@
 package com.volosano;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.Arrays;
 
@@ -14,7 +18,7 @@ import butterknife.OnClick;
 import lib.util.ToastUtil;
 import lib.widget.WheelView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private static final String[] PLANETS = new String[]{"Neck", "Shoulder", "Low Back"};
     private static final int[] BodyImages = {R.mipmap.icon_body_neck,R.mipmap.icon_body_shoulder,R.mipmap.icon_body_low_back};
     @Bind(R.id.WheelView)
@@ -38,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         wva.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(int selectedIndex, String item) {
-            img_body.setImageResource(BodyImages[selectedIndex - 1]);
-            currChoicePoint = PLANETS[selectedIndex - 1];
+                img_body.setImageResource(BodyImages[selectedIndex - 1]);
+                currChoicePoint = PLANETS[selectedIndex - 1];
             }
         });
     }

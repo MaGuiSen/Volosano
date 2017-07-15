@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +25,7 @@ import lib.util.ToastUtil;
 import lib.widget.ChoiceTimeDialog;
 import lib.widget.ChoiceValueDialog;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
 
     @Bind(R.id.txt_voice)
     TextView txtVoice;
@@ -213,7 +211,6 @@ public class SettingActivity extends AppCompatActivity {
         choiceValueDialog1.setDialogClickListener(new ChoiceValueDialog.DialogClickListener() {
             @Override
             public void choice(int timeLong) {
-                Log.e("ddddddddd", ""+timeLong);
                 group1Setting.setTimeLong(timeLong);
                 initUI();
             }
@@ -321,17 +318,6 @@ public class SettingActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, PlayActivity.class);
                 intent.putExtra("currPoint", currPoint);
                 startActivity(intent);
-
-//                //判断是否有全局的正在运行或者定时，有则会提示继续会将覆盖之前的设定 ：timing定时中  pausePlay :暂停中 stop 停止了 running 运行
-//                if(Global.isExecuting()){
-//                    //说明有设置项在起作用,如果继续操作的话将覆盖当前正在运行的
-//                    showAlertDialog();
-//                }else {
-//                    //说明没有任何设置在起作用在起作用就直接跳转播放
-//                    Intent intent = new Intent(this, PlayActivity.class);
-//                    intent.putExtra("currPoint", currPoint);
-//                    startActivity(intent);
-//                }
                 break;
         }
     }
@@ -349,7 +335,6 @@ public class SettingActivity extends AppCompatActivity {
             }).setPositiveButton("continue", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Global.status = Global.Timing;//设置为定时中,然后在具体的线程中进行判断对应的状态
                     MyApplication.currSetting = pointSetting;
                     Intent intent = new Intent(SettingActivity.this, PlayActivity.class);
                     intent.putExtra("currPoint", currPoint);

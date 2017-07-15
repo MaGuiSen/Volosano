@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lib.util.ToastUtil;
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends BaseActivity {
 
     @Bind(R.id.edit_msg)
     EditText editMsg;
@@ -54,6 +54,16 @@ public class ContactActivity extends AppCompatActivity {
                 this.finish();
                 break;
             case R.id.txt_send:
+                String msg = editMsg.getText().toString().replaceAll(" ", "");
+                String email = editEmail.getText().toString().replaceAll(" ", "");
+                if(TextUtils.isEmpty(msg)){
+                    ToastUtil.show("Please fill in you message");
+                    return;
+                }
+                if(TextUtils.isEmpty(email)){
+                    ToastUtil.show("Please fill in you email");
+                    return;
+                }
                 if(isNetworkConnected(this)){
                     //设置成功
                     editMsg.setText("");

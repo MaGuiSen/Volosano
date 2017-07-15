@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,17 +17,13 @@ import android.widget.TextView;
 import com.volosano.modal.GroupSetting;
 import com.volosano.modal.PointSetting;
 
-import java.io.IOException;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import lib.widget.CircleProgressView;
 import lib.widget.WareView;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends BaseActivity {
     private static final int[] BodyImages = {R.mipmap.icon_body_part_neck,R.mipmap.icon_body_part_shoulder,R.mipmap.icon_body_part_low_back};
     @Bind(R.id.img_part)
     ImageView imgPart;
@@ -136,6 +130,13 @@ public class PlayActivity extends AppCompatActivity {
             case R.id.img_play:
                 isPlay = !isPlay;
                 runProgress();
+                if(isPlay){
+                    //变化为暂停键
+                    imgPlay.setImageResource(R.mipmap.icon_stop);
+                }else{
+                    //变化为开始键
+                    imgPlay.setImageResource(R.mipmap.icon_start_orange);
+                }
                 break;
         }
     }
@@ -210,7 +211,7 @@ public class PlayActivity extends AppCompatActivity {
 
     public void pausePlay(){
         try {
-            if(player.isPlaying()) {
+            if(player != null && player.isPlaying()) {
                 player.pause();
             }
         }catch (Exception e){

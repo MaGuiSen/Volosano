@@ -1,10 +1,10 @@
 package lib.util;
 
-import com.volosano.modal.GroupSetting;
-import com.volosano.modal.PointSetting;
+import android.text.TextUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.Feature;
+import com.volosano.modal.PointSetting;
 
 /**
  * Created by mags on 2017/7/10.
@@ -12,19 +12,21 @@ import java.util.Map;
  */
 
 public class CacheUtil {
-    private static Map<String, PointSetting> cacheMap = new HashMap<>();
     public static PointSetting get(String key){
-        return cacheMap.get(key);
+        String setting = PreferenceUtil.getInstance().getStringParam(key, "");
+        if(TextUtils.isEmpty(setting)){
+            return null;
+        }
+        return JSON.parseObject(setting, PointSetting.class, Feature.IgnoreNotMatch);
     }
 
     /**
      * 根据key：痛点获取设置的缓存
      * @param key "Neck", "Shoulder", "Low Back"
-     * @param groupSetting
+     * @param pointSetting
      * @return
      */
-    public static Map<String, PointSetting> set(String key, PointSetting groupSetting){
-        cacheMap.put(key, groupSetting);
-        return cacheMap;
+    public static void set(String key, PointSetting pointSetting){
+        PreferenceUtil.getInstance().saveParam(key, JSON.toJSONString(pointSetting));
     }
 }

@@ -217,8 +217,10 @@ public class WheelView extends ScrollView {
                 return;
             }
             if (position == i) {
+                itemView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
                 itemView.setTextColor(Color.parseColor("#ffF4BB1B"));
             } else {
+                itemView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
                 itemView.setTextColor(Color.parseColor("#8ebbbbbb"));
             }
         }
@@ -255,13 +257,6 @@ public class WheelView extends ScrollView {
             public void draw(Canvas canvas) {
                 canvas.drawLine(viewWidth * 1 / 6, obtainSelectedAreaBorder()[1]-itemHeight/2, viewWidth * 1 / 6 + dip2px(20f), obtainSelectedAreaBorder()[1] - itemHeight/2, paint);
                 canvas.drawLine(viewWidth * 5 / 6 - dip2px(20f), obtainSelectedAreaBorder()[1]-itemHeight/2, viewWidth * 5 / 6, obtainSelectedAreaBorder()[1] - itemHeight/2, paint);
-//                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_whell_bg);
-//                canvas.drawBitmap(bitmap, viewWidth,360, paint);
-//                paint.setColor(Color.parseColor("#ffffffff"));
-//                //设置阴影效果，注意setLayerType(LAYER_TYPE_SOFTWARE, null);
-//                paint.setShadowLayer(40, 0, 0, 0xffffffff);
-//                setLayerType(LAYER_TYPE_SOFTWARE, null);
-//                canvas.drawLine(0, obtainSelectedAreaBorder()[1]-itemHeight/2, viewWidth, obtainSelectedAreaBorder()[1] - itemHeight/2, paint);
             }
 
             @Override

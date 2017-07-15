@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -68,8 +67,6 @@ public class SplashActivity extends Activity {
         long limitLong = cal.getTimeInMillis();
         Date da = cal.getTime();
         SimpleDateFormat sp = new SimpleDateFormat("yyyy-MM-dd");
-        Log.e("ddddddd", sp.format(da));
-        Log.e("ddddddd", "" + (limitLong > currLong));
         return limitLong > currLong;
     }
 

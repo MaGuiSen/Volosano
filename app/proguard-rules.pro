@@ -97,6 +97,14 @@
     @butterknife.* <methods>;
 }
 
+###fastjson###
+-dontwarn com.alibaba.fastjson.**
+-keep class com.alibaba.fastjson.** {*;}
+
+
+#systembartint系统栏
+-keep class com.readystatesoftware.systembartint.** { *; }
+
 
 
 

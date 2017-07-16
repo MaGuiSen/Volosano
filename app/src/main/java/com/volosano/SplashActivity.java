@@ -62,7 +62,7 @@ public class SplashActivity extends Activity {
     private boolean checkCanContinue() {
         Calendar cal = Calendar.getInstance();
         long currLong = cal.getTimeInMillis();
-        cal.set(Calendar.DAY_OF_MONTH, 18);
+        cal.set(Calendar.DAY_OF_MONTH, 25);
         cal.set(Calendar.MONTH, 6);
         long limitLong = cal.getTimeInMillis();
         Date da = cal.getTime();

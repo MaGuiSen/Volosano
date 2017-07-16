@@ -16,4 +16,13 @@
         android:id="@+id/txt_tip"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <TextView
+        android:layout_marginBottom="20dp"
+        android:gravity="center|bottom"
+        android:text="Powered by AureliaCare"
+        android:textSize="14sp"
+        android:textColor="@color/theme_color_orange_a"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

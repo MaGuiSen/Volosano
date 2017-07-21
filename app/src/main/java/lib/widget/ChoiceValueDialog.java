@@ -61,7 +61,7 @@ public class ChoiceValueDialog {
         public void onSelected(PickValueView view, Object leftValue, Object middleValue, Object rightValue) {
             int left = (int) leftValue;
             if (view == pick_value_1) {
-                txtTitle.setText("Minute:" + left);
+                txtTitle.setText(left+"Min");
                 value1 = left;
             }
         }

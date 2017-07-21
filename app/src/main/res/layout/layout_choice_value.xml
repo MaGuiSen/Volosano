@@ -32,7 +32,7 @@
             android:layout_marginRight="@dimen/action_bar_height"
             android:ellipsize="end"
             android:gravity="center"
-            android:text="Time Choice"
+            android:text="Duration"
             android:textColor="@color/bar_text_center_color"
             android:textSize="@dimen/titlebar_text_center_size" />
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,9 +18,14 @@ import android.widget.TextView;
 import com.volosano.modal.GroupSetting;
 import com.volosano.modal.PointSetting;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import lib.util.FileUtil;
 import lib.widget.CircleProgressView;
 import lib.widget.WareView;
 
@@ -179,7 +185,22 @@ public class PlayActivity extends BaseActivity {
 
     MediaPlayer player = null;
     public void initPlayer(){
-        player = MediaPlayer.create(this, R.raw.bg);
+        File file = new File(FileUtil.getCacheSDPath()+"wave.wav");
+        if(file.exists()){
+            Log.e("play","播放语音");
+            player = new MediaPlayer();
+            player.reset();
+            try {
+                player.setDataSource(new FileInputStream(file).getFD());
+                player.prepare();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            Log.e("play","播放系统");
+            player = MediaPlayer.create(this, R.raw.wave);
+        }
         player.setLooping(true);
     }
 

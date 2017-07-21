@@ -112,7 +112,7 @@ public class ChoiceTimeDialog {
             }else if(view == pick_value_2 ){
                 value2 = left;
             }
-            txtTitle.setText("Time:" + value1+":"+value2);
+            txtTitle.setText("Time " + value1+":"+value2);
         }
     };
 

@@ -46,9 +46,9 @@
         android:layout_height="4dp"
         android:background="@color/theme_color_orange_a"/>
     <TextView
-        android:layout_margin="4dp"
+        android:visibility="invisible"
         android:layout_gravity="center"
-        android:textSize="16sp"
+        android:textSize="10sp"
         android:textColor="@color/theme_color_orange_a"
         android:text="Contact Us"
         android:layout_width="wrap_content"

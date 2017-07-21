@@ -37,7 +37,7 @@
             android:text="My Favorite"
             android:textStyle="bold"
             android:gravity="center"
-            android:maxLength="10"
+            android:maxLength="22"
             android:textColor="@color/bar_text_center_color"
             android:textSize="@dimen/titlebar_text_center_size" />
 

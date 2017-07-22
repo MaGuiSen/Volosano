@@ -90,7 +90,7 @@ public class SettingActivity extends BaseActivity {
             partTip = "Bl10-Sl3";
         }else if("Shoulder".equals(currPoint)){
             partTip = "GL15-Sl11";
-        }else if("Low Back".equals(currPoint)){
+        }else if("Lower Back".equals(currPoint)){
             partTip = "BL57-BL40";
         }
         txt_part_tip.setText(partTip);

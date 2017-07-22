@@ -19,7 +19,7 @@ import lib.util.ToastUtil;
 import lib.widget.WheelView;
 
 public class MainActivity extends BaseActivity {
-    private static final String[] PLANETS = new String[]{"Neck", "Shoulder", "Low Back"};
+    private static final String[] PLANETS = new String[]{"Neck", "Shoulder", "Lower Back"};
     private static final int[] BodyImages = {R.mipmap.icon_body_neck,R.mipmap.icon_body_shoulder,R.mipmap.icon_body_low_back};
     @Bind(R.id.WheelView)
     lib.widget.WheelView WheelView;

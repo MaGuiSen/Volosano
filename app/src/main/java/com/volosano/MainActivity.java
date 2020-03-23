@@ -1,14 +1,8 @@
 package com.volosano;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.util.Arrays;
 
